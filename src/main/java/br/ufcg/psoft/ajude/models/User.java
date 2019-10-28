@@ -1,5 +1,6 @@
 package br.ufcg.psoft.ajude.models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -7,22 +8,26 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
 
     @Id
     private String email;
 
     @NotNull
+    @Column
     private String firstName;
 
     @NotNull
+    @Column
     private String lastName;
 
     @NotNull
+    @Column
     private String card;
 
     @NotNull
+    @Column
     private String password;
 
     public User() {
@@ -83,14 +88,11 @@ public class User {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return Objects.equals(email, user.email) &&
-                Objects.equals(firstName, user.firstName) &&
-                Objects.equals(lastName, user.lastName) &&
-                Objects.equals(card, user.card) &&
                 Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, firstName, lastName, card, password);
+        return Objects.hash(email, password);
     }
 }

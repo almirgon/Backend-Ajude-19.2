@@ -1,7 +1,7 @@
 package br.ufcg.psoft.ajude.security;
 
 import br.ufcg.psoft.ajude.models.User;
-import br.ufcg.psoft.ajude.service.UserService;
+import br.ufcg.psoft.ajude.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
