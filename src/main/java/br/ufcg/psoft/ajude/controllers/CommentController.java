@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping
+@RequestMapping("api/campaign/{id}/comment")
 public class CommentController {
 
     @Autowired
     private CommentDAO commentDAO;
+
+
 }

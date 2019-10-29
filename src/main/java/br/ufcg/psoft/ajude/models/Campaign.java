@@ -4,13 +4,14 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "campaign")
-public class Campaign {
+public class Campaign implements Serializable {
 
     @Id
     @GeneratedValue
@@ -39,7 +40,7 @@ public class Campaign {
     private List<Comment> comments;
 
     @Column
-    @Length(min = 5, max = 150)
+    @Length(min = 5)
     private String description;
 
     public Campaign() {

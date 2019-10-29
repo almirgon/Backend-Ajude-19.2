@@ -9,12 +9,15 @@ public class UserValidator {
 
     public static void ValidUser(User user){
 
-        if (user.getPassword() == null || user.getPassword().isEmpty()) throw new PasswordInvalidException("Senha inválida");
-        if (user.getFirstName() == null) throw new UserNullException("O primeiro nome não pode ser nulo, insira um nome valido");
-        if (user.getFirstName().trim().equals("")) throw new UserInvalidException("O primeiro nome não pode ser vazio, insira um nome valido");
-        if (user.getCard() == null || user.getCard().trim().equals("")) throw new UserInvalidException("Cartão inválido");
-        if(user.getLastName() == null) throw new UserNullException("O Ultimo nome não pode ser nulo, insira um nome valido");
-        if(user.getLastName().trim().equals("")) throw new UserInvalidException("O ultimo nome não pode ser vazio, insira um nome valido");
+        if(user.getPassword() == null || user.getPassword().isEmpty()) throw new PasswordInvalidException("Senha inválida");
+        if(user.getFirstName() == null) throw new UserNullException("O primeiro nome não pode ser nulo, insira um nome válido");
+        if(user.getFirstName().trim().equals("")) throw new UserInvalidException("O primeiro nome não pode ser vazio, insira um nome válido");
+        if(user.getCard() == null || user.getCard().trim().equals("")) throw new UserInvalidException("Cartão inválido");
+        if(user.getLastName() == null) throw new UserNullException("O último nome não pode ser nulo, insira um nome válido");
+        if(user.getLastName().trim().equals("")) throw new UserInvalidException("O último nome não pode ser vazio, insira um nome válido");
+        if(user.getEmail() == null) throw new UserNullException("O email não pode ser nulo, insira um email válido");
+        if(user.getEmail().trim().equals("")) throw new UserInvalidException("O email não pode ser vazio, insira um email válido");
+
 
     }
 }

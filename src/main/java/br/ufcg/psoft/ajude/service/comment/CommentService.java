@@ -5,10 +5,11 @@ import br.ufcg.psoft.ajude.models.Comment;
 import br.ufcg.psoft.ajude.models.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CommentService {
 
-    Comment findById(Long id);
+    Optional<Comment> findById(Long id);
     List<Comment> findAll();
     Comment createComment(Campaign campaign, User user, String text, long idComment);
     Comment ReplyComment(long idComment, Comment comment);

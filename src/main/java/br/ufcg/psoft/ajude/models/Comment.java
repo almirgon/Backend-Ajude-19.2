@@ -5,12 +5,14 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "comment")
-public class Comment {
+public class Comment implements Serializable {
 
     @Id
     @GeneratedValue
@@ -18,14 +20,10 @@ public class Comment {
 
     @NotNull
     @Column
-    private Campaign campaign;
-
-    @NotNull
-    @Column
     private User user;
 
     @Column
-    @Length(min = 0, max = 150)
+    @Length(min = 0, max = 250)
     private String text;
 
     @NotNull
@@ -49,8 +47,7 @@ public class Comment {
 
     }
 
-    public Comment(Campaign campaign, User user,  String text,  String date,  String hour, List<Comment> answers) {
-        this.campaign = campaign;
+    public Comment(User user,  String text,  String date,  String hour, List<Comment> answers) {
         this.user = user;
         this.text = text;
         this.date = date;
@@ -66,14 +63,6 @@ public class Comment {
 
     public void setIdComment(long idComment) {
         this.idComment = idComment;
-    }
-
-    public Campaign getCampaign() {
-        return campaign;
-    }
-
-    public void setCampaign(Campaign campaign) {
-        this.campaign = campaign;
     }
 
     public User getUser() {
@@ -96,7 +85,7 @@ public class Comment {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

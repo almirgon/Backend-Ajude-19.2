@@ -16,5 +16,6 @@ public class CampaignValidator {
         if(campaign.getGoal() <= 0) throw new CampaignInvalidException("A meta não pode ser menor/igual a 0");
         if(campaign.getLikes() < 0) throw new CampaignInvalidException("Os likes não podem ser abaixo de 0");
 
+
     }
 }

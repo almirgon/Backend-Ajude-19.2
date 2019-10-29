@@ -3,11 +3,14 @@ package br.ufcg.psoft.ajude.service.campaign;
 import br.ufcg.psoft.ajude.exceptions.entity.EntityExistsException;
 import br.ufcg.psoft.ajude.exceptions.entity.EntityNotFoundException;
 import br.ufcg.psoft.ajude.models.Campaign;
+import br.ufcg.psoft.ajude.models.User;
+import br.ufcg.psoft.ajude.models.dtos.SubjectDTO;
 import br.ufcg.psoft.ajude.repositories.CampaignDAO;
 import br.ufcg.psoft.ajude.validators.CampaignValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,6 +22,7 @@ public class CampaignBean implements CampaignService {
     @Override
     public Campaign findById(Long id) {
         Campaign result = this.campaignDAO.findCampaignById(id);
+        CampaignValidator.ValidCampaign(result);
         if (result == null) {
             throw new EntityNotFoundException("Campanha não encontrada!");
         }
@@ -65,5 +69,25 @@ public class CampaignBean implements CampaignService {
     @Override
     public List<Campaign> listByLike() {
         return this.campaignDAO.findAllCampaignByOrderByLikesDesc();
+    }
+
+    @Override
+    public List<SubjectDTO> findBySubstring(String substring) {
+        if (substring.isEmpty()) {
+            return new ArrayList<>();
+        } else {
+            List<SubjectDTO> list = new ArrayList<>();
+            for (Campaign campaign : campaignDAO.findBySubstring(substring)) {
+                list.add(new SubjectDTO(campaign.getId(), campaign.getName()));
+
+            }
+            return list;
+
+        }
+    }
+
+    @Override
+    public Campaign toLike(User user, long id) {
+        return null;
     }
 }

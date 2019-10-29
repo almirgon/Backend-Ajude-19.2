@@ -1,6 +1,7 @@
 package br.ufcg.psoft.ajude.controllers;
 
 import br.ufcg.psoft.ajude.models.Campaign;
+import br.ufcg.psoft.ajude.models.dtos.SubjectDTO;
 import br.ufcg.psoft.ajude.service.campaign.CampaignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,6 @@ public class CampaignController {
 
     @Autowired
     private CampaignService campaignService;
-
 
     @PostMapping
     public ResponseEntity<Campaign> addCampaign(@RequestBody Campaign campaign){
@@ -42,6 +42,13 @@ public class CampaignController {
         List campaigns = campaignService.findAll();
         return new ResponseEntity<List<Campaign>>(campaigns, HttpStatus.OK);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<SubjectDTO>> getBySubstring(@PathVariable String substring) {
+        return new ResponseEntity<>(this.campaignService.findBySubstring(substring.toUpperCase()), HttpStatus.OK);
+    }
+
+
 
 
 }

@@ -37,13 +37,11 @@ public class UserBean implements UserService {
     @Override
     public User createUser(User user) {
         UserValidator.ValidUser(user);
-
         User findUser = this.userDAO.findUserByEmail(user.getEmail());
 
         if (!(findUser == null)) {
             throw new EntityExistsException("Email já Cadastrado");
         }
-
         return userDAO.save(user);
 
     }
@@ -51,9 +49,9 @@ public class UserBean implements UserService {
     @Override
     public void deleteByEmail(String email) {
         User findUser = this.userDAO.findUserByEmail(email);
+        UserValidator.ValidUser(findUser);
 
         if(findUser == null) throw new EntityNotFoundException("O usuario não existe");
-
         userDAO.deleteById(email);
 
 

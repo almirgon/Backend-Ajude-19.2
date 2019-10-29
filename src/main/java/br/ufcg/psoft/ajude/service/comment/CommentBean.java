@@ -7,6 +7,7 @@ import br.ufcg.psoft.ajude.models.Campaign;
 import br.ufcg.psoft.ajude.models.Comment;
 import br.ufcg.psoft.ajude.models.User;
 import br.ufcg.psoft.ajude.repositories.CommentDAO;
+import br.ufcg.psoft.ajude.validators.CommentValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,9 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CommentBean implements CommentService {
@@ -23,11 +26,11 @@ public class CommentBean implements CommentService {
     private CommentDAO commentDAO;
 
     @Override
-    public Comment findById(Long id) {
-        Comment comment = this.commentDAO.findById(id).get();
-        if(comment == null){
+    public Optional<Comment> findById(Long id) {
+        Optional<Comment> comment = this.commentDAO.findById(id);
+        if(comment.isPresent()){
             throw new CommentNullException("Comentário não existe");
-        }if(comment.isCommentDeleted()){
+        }if(comment.get().isCommentDeleted()){
             throw new CommentInvalidException("Comentário Apagado!");
         }
         return comment;
@@ -44,20 +47,17 @@ public class CommentBean implements CommentService {
 
     @Override
     public Comment createComment(Campaign campaign, User user, String text, long idComment) {
-        if(text == null) throw new CommentNullException("O comentario não pode ser nulo");
-        if(text.trim().equals("")) throw new CommentInvalidException("O comentário não pode ser vazio");
-        if(user == null)throw new CommentNullException("O usuario não pode ser nulo");
-        if(campaign == null)throw new CommentNullException("A campanha não pode ser nula");
-
         String hour = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).format(DateTimeFormatter.ofPattern("HH:mm"));
         String date = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
-        Comment comment = new Comment(campaign,user,text,date,hour, new ArrayList<Comment>());
+        Comment comment = new Comment(user,text,date,hour, new ArrayList<Comment>());
+
+        CommentValidator.ValidComment(comment);
 
         if (idComment == 0) {
             campaign.addComment(comment);
         } else {
-            Comment commentFather = findById(idComment);
+            Comment commentFather = findById(idComment).get();
             commentFather.addAnswer(comment);
         }
 
@@ -67,13 +67,13 @@ public class CommentBean implements CommentService {
 
     @Override
     public Comment ReplyComment(long idComment, Comment comment) {
-        return null;
+       return null;
+
     }
 
     @Override
     public Comment deleteComment(long idComment) {
         Comment comment = commentDAO.findById(idComment).get();
-        Campaign campaign = comment.getCampaign();
         comment.setCommentDeleted(true);
 
         deleteChildrens(comment.getAnswers());
