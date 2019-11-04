@@ -60,7 +60,9 @@ public class CampaignBean implements CampaignService {
     }
 
     @Override
-    public Campaign toLike(User user, long id) {
-        return null;
+    public boolean toLike(User user, long id) {
+        Campaign campanha = this.findById(id);
+        campanha.addLike(user);
+        return true;
     }
 }

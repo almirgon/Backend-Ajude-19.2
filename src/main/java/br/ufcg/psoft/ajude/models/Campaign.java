@@ -27,6 +27,11 @@ public class Campaign implements Serializable {
     private String name;
 
     @NotNull
+    @Column
+    @OneToOne
+    private User user;
+
+    @NotNull
     @NotEmpty
     @Column
     private ZonedDateTime date;
@@ -137,6 +142,8 @@ public class Campaign implements Serializable {
     public void setLikes(List<User> likes) {
         this.likes = likes;
     }
+
+    public void addLike (User user){this.likes.add(user);}
 
     public List<Comment> getComments() {
         return comments;
