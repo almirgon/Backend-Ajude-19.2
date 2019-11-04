@@ -28,7 +28,6 @@ public class Campaign implements Serializable {
 
     @NotNull
     @Column
-    @OneToOne
     private User user;
 
     @NotNull
