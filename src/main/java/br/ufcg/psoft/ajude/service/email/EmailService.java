@@ -16,7 +16,8 @@ public class EmailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setSubject("AJuDE");
         message.setText("Seja bem vindo ao AJuDE, " +
-                "plataforma para financiamento coletivo onde as causas mais populares ganham mais visibilidade");
+                "plataforma para financiamento coletivo onde as causas mais populares ganham mais visibilidade :)" +
+                "Acesse nossa plataforma em: ...");
         message.setTo(email);
         message.setFrom("ajudepsoft192@gmail.com");
 

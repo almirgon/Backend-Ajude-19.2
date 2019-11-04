@@ -3,10 +3,14 @@ package br.ufcg.psoft.ajude.models;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 @Entity
@@ -14,24 +18,33 @@ import java.util.Objects;
 public class Campaign implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NotNull
+    @NotEmpty
     @Column
     private String name;
 
     @NotNull
+    @NotEmpty
     @Column
     private ZonedDateTime date;
 
     @NotNull
+    @NotEmpty
     @Column
     private Status status;
 
     @NotNull
+    @NotEmpty
     @Column
     private double goal;
+
+    @NotNull
+    @NotEmpty
+    @Column
+    private String url;
 
     @OneToMany
     private List<User> likes;
@@ -40,23 +53,31 @@ public class Campaign implements Serializable {
     private List<Comment> comments;
 
     @Column
+    @NotEmpty
     @Length(min = 5)
     private String description;
+
+    @Column
+    @OneToMany
+    private List<Donation> donations;
 
     public Campaign() {
 
     }
 
-    public Campaign(long id, String name,ZonedDateTime date, Status status,double goal,
-                    List<User> likes, List<Comment> comments, String description) {
+    public Campaign(long id, String name, ZonedDateTime date, Status status, double goal,
+                    String url, List<User> likes, List<Comment> comments,
+                    String description, List<Donation> donations) {
         this.id = id;
         this.name = name;
         this.date = date;
         this.status = status;
         this.goal = goal;
+        this.url = url;
         this.likes = likes;
         this.comments = comments;
         this.description = description;
+        this.donations = donations;
     }
 
     public long getId() {
@@ -73,6 +94,14 @@ public class Campaign implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getFormatedDate() {
+        DateTimeFormatter formatador = DateTimeFormatter
+                .ofLocalizedDateTime(FormatStyle.SHORT)
+                .withLocale(new Locale("pt", "br"));
+
+        return date.format(formatador);
     }
 
     public ZonedDateTime getDate() {
@@ -127,6 +156,22 @@ public class Campaign implements Serializable {
 
     public void addComment(Comment comment){
         this.comments.add(comment);
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public List<Donation> getDonations() {
+        return donations;
+    }
+
+    public void setDonations(List<Donation> donations) {
+        this.donations = donations;
     }
 
     @Override

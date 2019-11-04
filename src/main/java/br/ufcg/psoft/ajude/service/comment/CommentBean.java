@@ -39,29 +39,27 @@ public class CommentBean implements CommentService {
     @Override
     public List<Comment> findAll() {
         List<Comment> comments = this.commentDAO.findAll();
-        if(comments.isEmpty()){
-            throw new EntityNotFoundException("Não há campanhas cadastradas");
-        }
         return comments;
     }
 
     @Override
     public Comment createComment(Campaign campaign, User user, String text, long idComment) {
-        String hour = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).format(DateTimeFormatter.ofPattern("HH:mm"));
-        String date = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+//        ZonedDateTime date = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo"));
+//
+//        Comment comment = new Comment(idComment,user,text,date,new ArrayList<Comment>());
+//
+//        CommentValidator.ValidComment(comment);
+//
+//        if (idComment == 0) {
+//            campaign.addComment(comment);
+//        } else {
+//            Comment commentFather = findById(idComment).get();
+//            commentFather.addAnswer(comment);
+//        }
+//
+//        return commentDAO.save(comment);
 
-        Comment comment = new Comment(user,text,date,hour, new ArrayList<Comment>());
-
-        CommentValidator.ValidComment(comment);
-
-        if (idComment == 0) {
-            campaign.addComment(comment);
-        } else {
-            Comment commentFather = findById(idComment).get();
-            commentFather.addAnswer(comment);
-        }
-
-        return commentDAO.save(comment);
+        return null;
 
     }
 
@@ -73,10 +71,10 @@ public class CommentBean implements CommentService {
 
     @Override
     public Comment deleteComment(long idComment) {
-        Comment comment = commentDAO.findById(idComment).get();
+        Comment comment = commentDAO.findById(idComment);
         comment.setCommentDeleted(true);
 
-        deleteChildrens(comment.getAnswers());
+//        deleteChildrens(comment.getAnswers());
         commentDAO.save(comment);
         return comment;
     }
@@ -86,7 +84,7 @@ public class CommentBean implements CommentService {
         if (list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
                 list.get(i).setCommentDeleted(true);
-                deleteChildrens(list.get(i).getAnswers());
+//                deleteChildrens(list.get(i).getAnswers());
             }
 
         }

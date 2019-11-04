@@ -16,6 +16,9 @@ public class UserBean implements UserService {
     @Autowired
     private UserDAO userDAO;
 
+    @Autowired
+    private UserValidator userValidator;
+
     @Override
     public User findByEmail(String email) {
         User result = this.userDAO.findUserByEmail(email);
@@ -26,39 +29,17 @@ public class UserBean implements UserService {
     }
 
     @Override
-    public List<User> findAll() {
-        List<User> users = userDAO.findAll();
-        if (users.isEmpty()) {
-            throw new EntityNotFoundException("Não existem usuários");
-        }
-        return users;
-    }
-
-    @Override
     public User createUser(User user) {
-        UserValidator.ValidUser(user);
+        userValidator.ValidUser(user);
         User findUser = this.userDAO.findUserByEmail(user.getEmail());
 
-        if (!(findUser == null)) {
+        if (findUser != null) {
             throw new EntityExistsException("Email já Cadastrado");
         }
         return userDAO.save(user);
 
     }
 
-    @Override
-    public void deleteByEmail(String email) {
-        User findUser = this.userDAO.findUserByEmail(email);
-        UserValidator.ValidUser(findUser);
-
-        if(findUser == null) throw new EntityNotFoundException("O usuario não existe");
-        userDAO.deleteById(email);
-
-
-    }
-
-    @Override
-    public void deleteAll() {
-        this.userDAO.deleteAll();
-    }
 }
+
+

@@ -6,8 +6,11 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 @Entity
@@ -15,11 +18,11 @@ import java.util.Objects;
 public class Comment implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idComment;
 
     @NotNull
-    @Column
+    @ManyToOne
     private User user;
 
     @Column
@@ -28,11 +31,7 @@ public class Comment implements Serializable {
 
     @NotNull
     @Column
-    private String date;
-
-    @NotNull
-    @Column
-    private String hour;
+    private ZonedDateTime date;
 
     private boolean commentDeleted;
 
@@ -43,18 +42,24 @@ public class Comment implements Serializable {
     @JsonBackReference(value = "parent")
     private Comment parent;
 
+    @NotNull
+    @ManyToOne
+    private Campaign campaign;
+
+
     public Comment() {
 
     }
 
-    public Comment(User user,  String text,  String date,  String hour, List<Comment> answers) {
-        this.user = user;
-        this.text = text;
-        this.date = date;
-        this.hour = hour;
-        this.answers = answers;
-    }
-
+//    public Comment(long idComment,User user,String text, ZonedDateTime date, boolean commentDeleted, List<Comment> answers) {
+//        this.idComment = idComment;
+//        this.user = user;
+//        this.text = text;
+//        this.date = date;
+//        this.commentDeleted = commentDeleted;
+//        this.answers = answers;
+//
+//    }
 
 
     public long getIdComment() {
@@ -82,19 +87,15 @@ public class Comment implements Serializable {
     }
 
     public String getDate() {
-        return date;
+        DateTimeFormatter formatador = DateTimeFormatter
+                .ofLocalizedDateTime(FormatStyle.SHORT)
+                .withLocale(new Locale("pt", "br"));
+
+        return date.format(formatador);
     }
 
-    public void setDate(Date date) {
+    public void setDate(ZonedDateTime date) {
         this.date = date;
-    }
-
-    public String getHour() {
-        return hour;
-    }
-
-    public void setHour(String hour) {
-        this.hour = hour;
     }
 
     public boolean isCommentDeleted() {
@@ -105,26 +106,33 @@ public class Comment implements Serializable {
         this.commentDeleted = commentDeleted;
     }
 
-    public List<Comment> getAnswers() {
-        return answers;
+//    public List<Comment> getAnswers() {
+//        return answers;
+//    }
+
+//    public void setAnswers(List<Comment> answers) {
+//        this.answers = answers;
+//    }
+//
+//    public Comment getParent() {
+//        return parent;
+//    }
+//
+//    public void setParent(Comment parent) {
+//        this.parent = parent;
+//    }
+//
+//    public void addAnswer(Comment comment){
+//        this.answers.add(comment);
+//    }
+
+    public Campaign getCampaign() {
+        return campaign;
     }
 
-    public void setAnswers(List<Comment> answers) {
-        this.answers = answers;
+    public void setCampaign(Campaign campaign) {
+        this.campaign = campaign;
     }
-
-    public Comment getParent() {
-        return parent;
-    }
-
-    public void setParent(Comment parent) {
-        this.parent = parent;
-    }
-
-    public void addAnswer(Comment comment){
-        this.answers.add(comment);
-    }
-
 
     @Override
     public boolean equals(Object o) {
