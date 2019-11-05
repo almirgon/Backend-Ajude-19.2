@@ -22,7 +22,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<User> addUser(@RequestBody User user){
         try{
-            this.emailService.sendMail(user.getEmail());
+            this.emailService.sendMail(user);
         }catch (RuntimeException e){
             throw new EmailInvalidException("Email inválido");
         }

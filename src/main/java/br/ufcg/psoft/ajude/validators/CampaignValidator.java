@@ -12,14 +12,12 @@ import java.time.ZonedDateTime;
 public class CampaignValidator {
 
     public void ValidCampaign(Campaign campaign){
+        if(campaign == null) throw new CampaignNullException("A campanha não pode ser nula");
         if(campaign.getName() == null) throw new CampaignNullException("O nome da campanha não pode ser nulo");
         if(campaign.getName().trim().equals("")) throw new CampaignInvalidException("O nome da campanha não pode ser vazio");
         if(campaign.getDescription() == null) throw new CampaignNullException("A descrição não pode ser nula");
         if(campaign.getDescription().trim().equals("")) throw new CampaignInvalidException("A descrição não pode ser vazia");
-        if(campaign.getStatus().getDescription() == null) throw new CampaignNullException("O status não pode ser nulo");
-        if(campaign.getStatus().getDescription().trim().equals("")) throw new CampaignInvalidException("O status não pode ser vazio");
         if(campaign.getGoal() <= 0) throw new CampaignInvalidException("A meta não pode ser menor/igual a 0");
         if(campaign.getLikes() < 0) throw new CampaignInvalidException("Os likes não podem ser abaixo de 0");
-        if(campaign.getDate().isAfter(ZonedDateTime.now())) throw new DateInvalidException("A data da campanha deve ser posterior a data atual");
     }
 }

@@ -1,6 +1,7 @@
 package br.ufcg.psoft.ajude.service.email;
 
 import br.ufcg.psoft.ajude.exceptions.email.EmailNotFoundException;
+import br.ufcg.psoft.ajude.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -12,14 +13,16 @@ public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    public void sendMail(String email) {
+
+    public void sendMail(User user) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setSubject("AJuDE");
-        message.setText("Seja bem vindo ao AJuDE, " +
-                "plataforma para financiamento coletivo onde as causas mais populares ganham mais visibilidade :)" +
-                "Acesse nossa plataforma em: ...");
-        message.setTo(email);
-        message.setFrom("ajudepsoft192@gmail.com");
+        message.setSubject("Seja bem vindo ao AJuDE");
+        message.setText("Olá, " + user.getFirstName() + System.lineSeparator() +
+               System.lineSeparator() + "Obrigado por se cadastrar na nossa plataforma para financiamento coletivo " +
+                "onde as causas mais populares ganham mais visibilidade :)" + System.lineSeparator() +
+                "Acesse nossa plataforma em: colocar a url aqui");
+        message.setTo(user.getEmail());
+        message.setFrom("AJuDE <ajudepsoft192@gmail.com>");
 
         try {
             javaMailSender.send(message);

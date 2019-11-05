@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class UserValidator {
 
     public void ValidUser(User user){
-        //validar primeiro o usuario
+        if (user == null) throw new UserNullException("O Usuário não pode ser nulo");
         if(user.getPassword() == null || user.getPassword().isEmpty()) throw new PasswordInvalidException("Senha inválida");
         if(user.getFirstName() == null) throw new UserNullException("O primeiro nome não pode ser nulo, insira um nome válido");
         if(user.getFirstName().trim().equals("")) throw new UserInvalidException("O primeiro nome não pode ser vazio, insira um nome válido");

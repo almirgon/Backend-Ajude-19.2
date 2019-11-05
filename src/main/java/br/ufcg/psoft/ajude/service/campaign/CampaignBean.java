@@ -9,7 +9,6 @@ import br.ufcg.psoft.ajude.validators.CampaignValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -61,6 +60,8 @@ public class CampaignBean implements CampaignService {
 
     @Override
     public Campaign toLike(User user, long id) {
-        return null;
+        Campaign campaign = this.findById(id);
+        campaign.addLikes(user);
+        return campaign;
     }
 }

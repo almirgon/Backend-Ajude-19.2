@@ -14,14 +14,13 @@ import java.util.Locale;
 import java.util.Objects;
 
 @Entity
-@Table(name = "comment")
+@Table(name = "tb_comment")
 public class Comment implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idComment;
 
-    @NotNull
     @ManyToOne
     private User user;
 
@@ -42,7 +41,6 @@ public class Comment implements Serializable {
     @JsonBackReference(value = "parent")
     private Comment parent;
 
-    @NotNull
     @ManyToOne
     private Campaign campaign;
 

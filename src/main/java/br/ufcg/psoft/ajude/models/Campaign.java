@@ -14,7 +14,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 @Entity
-@Table(name = "campaign")
+@Table(name = "tb_campaign")
 public class Campaign implements Serializable {
 
     @Id
@@ -26,18 +26,13 @@ public class Campaign implements Serializable {
     @Column
     private String name;
 
-    @NotNull
-    @NotEmpty
     @Column
     private ZonedDateTime date;
 
-    @NotNull
-    @NotEmpty
     @Column
     private Status status;
 
     @NotNull
-    @NotEmpty
     @Column
     private double goal;
 
@@ -57,27 +52,24 @@ public class Campaign implements Serializable {
     @Length(min = 5)
     private String description;
 
-    @Column
     @OneToMany
     private List<Donation> donations;
+
+    @ManyToOne
+    private User user;
 
     public Campaign() {
 
     }
 
-    public Campaign(long id, String name, ZonedDateTime date, Status status, double goal,
-                    String url, List<User> likes, List<Comment> comments,
-                    String description, List<Donation> donations) {
-        this.id = id;
+    public Campaign(String name, double goal,
+                    String url,
+                    String description, User user) {
         this.name = name;
-        this.date = date;
-        this.status = status;
         this.goal = goal;
         this.url = url;
-        this.likes = likes;
-        this.comments = comments;
         this.description = description;
-        this.donations = donations;
+        this.user = user;
     }
 
     public long getId() {
@@ -134,6 +126,14 @@ public class Campaign implements Serializable {
         return 0;
     }
 
+    public void addLikes(User user){
+        this.likes.add(user);
+    }
+
+    public void removeLike(User user){
+        this.likes.remove(user);
+    }
+
     public void setLikes(List<User> likes) {
         this.likes = likes;
     }
@@ -158,6 +158,10 @@ public class Campaign implements Serializable {
         this.comments.add(comment);
     }
 
+    public void removeComent(Comment comment){
+        this.comments.remove(comment);
+    }
+
     public String getUrl() {
         return url;
     }
@@ -172,6 +176,14 @@ public class Campaign implements Serializable {
 
     public void setDonations(List<Donation> donations) {
         this.donations = donations;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
