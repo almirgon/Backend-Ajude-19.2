@@ -1,8 +1,11 @@
 package br.ufcg.psoft.ajude.security;
 
+import br.ufcg.psoft.ajude.models.User;
+import br.ufcg.psoft.ajude.service.user.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

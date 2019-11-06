@@ -1,5 +1,6 @@
 package br.ufcg.psoft.ajude.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -34,10 +35,8 @@ public class Campaign implements Serializable {
 
     @NotNull
     @Column
-    private double goal;
+    private Double goal;
 
-    @NotNull
-    @NotEmpty
     @Column
     private String url;
 
@@ -55,14 +54,14 @@ public class Campaign implements Serializable {
     @OneToMany
     private List<Donation> donations;
 
-    @ManyToOne
+    @ManyToOne(optional = true)
     private User user;
 
     public Campaign() {
 
     }
 
-    public Campaign(String name, double goal,
+    public Campaign(String name, Double goal,
                     String url,
                     String description, User user) {
         this.name = name;
@@ -88,6 +87,7 @@ public class Campaign implements Serializable {
         this.name = name;
     }
 
+    @JsonIgnore
     public String getFormatedDate() {
         DateTimeFormatter formatador = DateTimeFormatter
                 .ofLocalizedDateTime(FormatStyle.SHORT)
@@ -112,11 +112,11 @@ public class Campaign implements Serializable {
         this.status = status;
     }
 
-    public double getGoal() {
+    public Double getGoal() {
         return goal;
     }
 
-    public void setGoal(double goal) {
+    public void setGoal(Double goal) {
         this.goal = goal;
     }
 
