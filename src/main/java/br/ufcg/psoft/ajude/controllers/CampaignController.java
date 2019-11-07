@@ -1,7 +1,7 @@
 package br.ufcg.psoft.ajude.controllers;
 
-import br.ufcg.psoft.ajude.models.Campaign;
-import br.ufcg.psoft.ajude.service.campaign.CampaignService;
+import br.ufcg.psoft.ajude.business.CampaignBusinessDelegate;
+import br.ufcg.psoft.ajude.dto.CampaignDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,16 +14,16 @@ import java.util.List;
 public class CampaignController {
 
     @Autowired
-    private CampaignService campaignService;
+    private CampaignBusinessDelegate campaignBusinessDelegate;
 
     @PostMapping
-    public ResponseEntity<Campaign> addCampaign(@RequestBody Campaign campaign){
-        return new ResponseEntity<Campaign>(this.campaignService.createCampaign(campaign), HttpStatus.CREATED);
+    public ResponseEntity<CampaignDTO> addCampaign(@RequestBody CampaignDTO campaignDTO){
+        return new ResponseEntity<>(this.campaignBusinessDelegate.createCampaign(campaignDTO), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Campaign> getCampaign(@PathVariable Long id){
-        return new ResponseEntity<Campaign>(campaignService.findById(id), HttpStatus.OK);
+    public ResponseEntity<CampaignDTO> getCampaign(@PathVariable Long id){
+        return new ResponseEntity<>(campaignBusinessDelegate.findById(id), HttpStatus.OK);
     }
 
 //    @GetMapping("/ranking/likes")
@@ -32,14 +32,14 @@ public class CampaignController {
 //    }
 
     @GetMapping
-    public ResponseEntity<List<Campaign>> getAll() {
-        List campaigns = campaignService.findAll();
-        return new ResponseEntity<List<Campaign>>(campaigns, HttpStatus.OK);
+    public ResponseEntity<List<CampaignDTO>> getAll() {
+        List<CampaignDTO> campaigns = campaignBusinessDelegate.findAll();
+        return new ResponseEntity<>(campaigns, HttpStatus.OK);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<Campaign>> getBySubstring(@PathVariable String campaign) {
-        return new ResponseEntity<>(this.campaignService.findBySubstring(campaign.toUpperCase()), HttpStatus.OK);
+    @GetMapping("/search/{campaign}")
+    public ResponseEntity<List<CampaignDTO>> getBySubstring(@PathVariable String campaign) {
+        return new ResponseEntity<>(this.campaignBusinessDelegate.findBySubstring(campaign), HttpStatus.OK);
     }
 
 

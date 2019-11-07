@@ -22,9 +22,9 @@ public class UserBean implements UserService {
     @Override
     public User findByEmail(String email) {
         User result = this.userDAO.findUserByEmail(email);
-        if (result == null) {
+        /*if (result == null) {
             throw new EntityNotFoundException("Usuário não encontrado!");
-        }
+        }*/
         return result;
     }
 

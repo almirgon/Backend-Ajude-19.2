@@ -1,6 +1,6 @@
 package br.ufcg.psoft.ajude.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -8,11 +8,10 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "tb_campaign")
@@ -28,6 +27,7 @@ public class Campaign implements Serializable {
     private String name;
 
     @Column
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     private ZonedDateTime date;
 
     @Column
@@ -36,6 +36,9 @@ public class Campaign implements Serializable {
     @NotNull
     @Column
     private Double goal;
+
+    @OneToMany
+    private List<Donation> totalDonation;
 
     @Column
     private String url;
@@ -54,11 +57,13 @@ public class Campaign implements Serializable {
     @OneToMany
     private List<Donation> donations;
 
-    @ManyToOne(optional = true)
+    @ManyToOne
     private User user;
 
     public Campaign() {
-
+        this.donations = new ArrayList<>();
+        this.likes = new ArrayList<>();
+        this.comments = new ArrayList<>();
     }
 
     public Campaign(String name, Double goal,
@@ -87,15 +92,6 @@ public class Campaign implements Serializable {
         this.name = name;
     }
 
-    @JsonIgnore
-    public String getFormatedDate() {
-        DateTimeFormatter formatador = DateTimeFormatter
-                .ofLocalizedDateTime(FormatStyle.SHORT)
-                .withLocale(new Locale("pt", "br"));
-
-        return date.format(formatador);
-    }
-
     public ZonedDateTime getDate() {
         return date;
     }
@@ -118,6 +114,18 @@ public class Campaign implements Serializable {
 
     public void setGoal(Double goal) {
         this.goal = goal;
+    }
+
+    public List<Donation> getTotalDonation() {
+        return totalDonation;
+    }
+
+    public Double getRaisedAmount(){
+        return getDonations().stream().collect(Collectors.summingDouble(value -> value.getValue()));
+    }
+
+    public void setTotalDonation(List<Donation> totalDonation) {
+        this.totalDonation = totalDonation;
     }
 
     public int getLikes() {
@@ -158,7 +166,7 @@ public class Campaign implements Serializable {
         this.comments.add(comment);
     }
 
-    public void removeComent(Comment comment){
+    public void removeComment(Comment comment){
         this.comments.remove(comment);
     }
 

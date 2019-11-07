@@ -5,7 +5,6 @@ import br.ufcg.psoft.ajude.models.Campaign;
 import br.ufcg.psoft.ajude.models.Status;
 import br.ufcg.psoft.ajude.models.User;
 import br.ufcg.psoft.ajude.repositories.CampaignDAO;
-import br.ufcg.psoft.ajude.service.user.UserService;
 import br.ufcg.psoft.ajude.validators.CampaignValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,13 +21,9 @@ public class CampaignBean implements CampaignService {
     @Autowired
     private CampaignValidator campaignValidator;
 
-    @Autowired
-    UserService userService;
-
     @Override
     public Campaign findById(Long id) {
         Campaign result = this.campaignDAO.findCampaignById(id);
-        campaignValidator.ValidCampaign(result);
         if (result == null) {
             throw new EntityNotFoundException("Campanha não encontrada!");
         }
@@ -50,9 +45,8 @@ public class CampaignBean implements CampaignService {
     public Campaign createCampaign(Campaign campaign) {
         campaignValidator.ValidCampaign(campaign);
         campaign.setStatus(Status.ATIVA);
-        String user = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User usuario = userService.findByEmail(user);
-        campaign.setUser(usuario);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        campaign.setUser(user);
         return campaignDAO.save(campaign);
     }
 
@@ -63,7 +57,7 @@ public class CampaignBean implements CampaignService {
 
     @Override
         public List<Campaign> findBySubstring(String campaign) {
-            return this.campaignDAO.findBySubstring(campaign);
+            return this.campaignDAO.findBySubstring(campaign.toLowerCase());
     }
 
     @Override
