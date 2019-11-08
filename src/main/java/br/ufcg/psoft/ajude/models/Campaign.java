@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.text.Normalizer;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -134,6 +135,14 @@ public class Campaign implements Serializable {
         return 0;
     }
 
+    public String createUrl(){
+        String result = "";
+        result = Normalizer.normalize(this.getName(), Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+        result = result.replaceAll("\\s+", "-").toLowerCase();
+        result = result.replaceAll("[.,;?!:#@]+","");
+        return result;
+    }
+
     public void addLikes(User user){
         this.likes.add(user);
     }
@@ -171,7 +180,7 @@ public class Campaign implements Serializable {
     }
 
     public String getUrl() {
-        return url;
+        return createUrl();
     }
 
     public void setUrl(String url) {

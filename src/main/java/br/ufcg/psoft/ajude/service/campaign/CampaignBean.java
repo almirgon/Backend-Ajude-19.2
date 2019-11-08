@@ -47,6 +47,7 @@ public class CampaignBean implements CampaignService {
         campaign.setStatus(Status.ATIVA);
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         campaign.setUser(user);
+        campaign.setUrl(campaign.getUrl());
         return campaignDAO.save(campaign);
     }
 
