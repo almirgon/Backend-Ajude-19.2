@@ -22,7 +22,7 @@ public class CampaignBean implements CampaignService {
     private CampaignValidator campaignValidator;
 
     @Override
-    public Campaign findById(Long id) {
+    public Campaign findById(long id) {
         Campaign result = this.campaignDAO.findCampaignById(id);
         if (result == null) {
             throw new EntityNotFoundException("Campanha não encontrada!");
@@ -38,7 +38,11 @@ public class CampaignBean implements CampaignService {
 
     @Override
     public Campaign findByUrl(String url) {
-        return null;
+        Campaign result = this.campaignDAO.findByUrl(url);
+        if (result == null) {
+            throw new EntityNotFoundException("Campanha não encontrada!");
+        }
+        return result;
     }
 
     @Override

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CampaignService {
 
-    Campaign findById(Long id);
+    Campaign findById(long id);
     List<Campaign> findAll();
     Campaign findByUrl(String url);
     Campaign createCampaign(Campaign campaign);

@@ -24,7 +24,7 @@ public class Campaign implements Serializable {
 
     @NotNull
     @NotEmpty
-    @Column
+    @Column(unique = true)
     private String name;
 
     @Column

@@ -77,7 +77,9 @@ public class Comment implements Serializable {
     }
 
     public String getText() {
-        return text;
+        String result = "";
+        if (!commentDeleted) result = text;
+        return result;
     }
 
     public void setText(String text) {
@@ -104,25 +106,25 @@ public class Comment implements Serializable {
         this.commentDeleted = commentDeleted;
     }
 
-//    public List<Comment> getAnswers() {
-//        return answers;
-//    }
+    public List<Comment> getAnswers() {
+        List<Comment> result = answers;
+        return result;
+   }
 
-//    public void setAnswers(List<Comment> answers) {
-//        this.answers = answers;
-//    }
-//
-//    public Comment getParent() {
-//        return parent;
-//    }
-//
-//    public void setParent(Comment parent) {
-//        this.parent = parent;
-//    }
-//
-//    public void addAnswer(Comment comment){
-//        this.answers.add(comment);
-//    }
+    public void setAnswers(List<Comment> answers) {
+       this.answers = answers;
+   }
+
+   public Comment getParent() {
+       return parent;
+   }
+    public void setParent(Comment parent) {
+        this.parent = parent;
+   }
+
+    public void addAnswer(Comment comment){
+       this.answers.add(comment);
+   }
 
     public Campaign getCampaign() {
         return campaign;

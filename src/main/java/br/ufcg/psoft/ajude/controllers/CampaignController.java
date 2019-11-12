@@ -26,6 +26,11 @@ public class CampaignController {
         return new ResponseEntity<>(campaignBusinessDelegate.findById(id), HttpStatus.OK);
     }
 
+    @GetMapping("/buscar/{url}")
+    public ResponseEntity<CampaignDTO> getByUrl(@PathVariable String url){
+        return new ResponseEntity<>(campaignBusinessDelegate.findByUrl(url), HttpStatus.OK);
+    }
+
 //    @GetMapping("/ranking/likes")
 //    public ResponseEntity<List<Campaign>> rankingByLike(){
 //        return new ResponseEntity<List<Campaign>>(campaignService.listByLike(), HttpStatus.OK);
@@ -37,7 +42,7 @@ public class CampaignController {
         return new ResponseEntity<>(campaigns, HttpStatus.OK);
     }
 
-    @GetMapping("/search/{campaign}")
+    @GetMapping("/search/{campaign")
     public ResponseEntity<List<CampaignDTO>> getBySubstring(@PathVariable String campaign) {
         return new ResponseEntity<>(this.campaignBusinessDelegate.findBySubstring(campaign), HttpStatus.OK);
     }

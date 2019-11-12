@@ -23,8 +23,9 @@ public class CampaignBusinessDelegate {
        return this.campaignService.findAll().stream().map(campaign -> new CampaignDTO(campaign)).collect(Collectors.toList());
    }
    public CampaignDTO findByUrl(String url){
-       return new CampaignDTO((this.campaignService.findByUrl(url)));
+       return new CampaignDTO(this.campaignService.findByUrl(url));
    }
+
    public CampaignDTO createCampaign(CampaignDTO campaignDTO){
        return new CampaignDTO(this.campaignService.createCampaign(campaignDTO.getCampaign()));
    }
