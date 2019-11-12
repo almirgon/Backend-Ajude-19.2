@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/campaign/{id}/comment")
+@RequestMapping("/v1/campaign/{id}/comment")
 public class CommentController {
 
     @Autowired

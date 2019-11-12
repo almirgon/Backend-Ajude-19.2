@@ -8,8 +8,6 @@ import br.ufcg.psoft.ajude.validators.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class UserBean implements UserService {
 
@@ -22,9 +20,6 @@ public class UserBean implements UserService {
     @Override
     public User findByEmail(String email) {
         User result = this.userDAO.findUserByEmail(email);
-        /*if (result == null) {
-            throw new EntityNotFoundException("Usuário não encontrado!");
-        }*/
         return result;
     }
 
