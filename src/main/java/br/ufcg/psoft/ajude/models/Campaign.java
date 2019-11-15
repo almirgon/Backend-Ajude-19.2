@@ -20,7 +20,7 @@ public class Campaign implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @NotNull
     @NotEmpty
@@ -47,7 +47,7 @@ public class Campaign implements Serializable {
     @OneToMany
     private List<User> likes;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     @Column
@@ -67,21 +67,11 @@ public class Campaign implements Serializable {
         this.comments = new ArrayList<>();
     }
 
-    public Campaign(String name, Double goal,
-                    String url,
-                    String description, User user) {
-        this.name = name;
-        this.goal = goal;
-        this.url = url;
-        this.description = description;
-        this.user = user;
-    }
-
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -129,7 +119,7 @@ public class Campaign implements Serializable {
         this.totalDonation = totalDonation;
     }
 
-    public int getLikes() {
+    public int numberLikes() {
         if (this.likes != null)
             return this.likes.size();
         return 0;
@@ -143,12 +133,8 @@ public class Campaign implements Serializable {
         return result;
     }
 
-    public void addLikes(User user){
-        this.likes.add(user);
-    }
-
-    public void removeLike(User user){
-        this.likes.remove(user);
+    public List<User> getLikes() {
+        return likes;
     }
 
     public void setLikes(List<User> likes) {
@@ -156,7 +142,8 @@ public class Campaign implements Serializable {
     }
 
     public List<Comment> getComments() {
-        return comments;
+
+        return comments.stream().filter(comment -> !comment.isCommentDeleted()).collect(Collectors.toList());
     }
 
     public void setComments(List<Comment> comments) {
@@ -180,7 +167,7 @@ public class Campaign implements Serializable {
     }
 
     public String getUrl() {
-        return createUrl();
+        return this.url;
     }
 
     public void setUrl(String url) {
@@ -202,6 +189,7 @@ public class Campaign implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
+
 
     @Override
     public boolean equals(Object o) {

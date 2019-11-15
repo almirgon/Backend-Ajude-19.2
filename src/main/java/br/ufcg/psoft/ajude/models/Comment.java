@@ -1,17 +1,15 @@
 package br.ufcg.psoft.ajude.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "tb_comment")
@@ -25,39 +23,24 @@ public class Comment implements Serializable {
     private User user;
 
     @Column
-    @Length(min = 0, max = 250)
+    @Length(min = 1, max = 500)
     private String text;
 
-    @NotNull
     @Column
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     private ZonedDateTime date;
 
+    @Column
     private boolean commentDeleted;
 
     @OneToMany
     private List<Comment> answers;
 
-    @ManyToOne
-    @JsonBackReference(value = "parent")
-    private Comment parent;
-
-    @ManyToOne
-    private Campaign campaign;
-
 
     public Comment() {
-
+        this.answers = new ArrayList<>();
     }
 
-//    public Comment(long idComment,User user,String text, ZonedDateTime date, boolean commentDeleted, List<Comment> answers) {
-//        this.idComment = idComment;
-//        this.user = user;
-//        this.text = text;
-//        this.date = date;
-//        this.commentDeleted = commentDeleted;
-//        this.answers = answers;
-//
-//    }
 
 
     public long getIdComment() {
@@ -77,21 +60,15 @@ public class Comment implements Serializable {
     }
 
     public String getText() {
-        String result = "";
-        if (!commentDeleted) result = text;
-        return result;
+        return text;
     }
 
     public void setText(String text) {
         this.text = text;
     }
 
-    public String getDate() {
-        DateTimeFormatter formatador = DateTimeFormatter
-                .ofLocalizedDateTime(FormatStyle.SHORT)
-                .withLocale(new Locale("pt", "br"));
-
-        return date.format(formatador);
+    public ZonedDateTime getDate() {
+        return date;
     }
 
     public void setDate(ZonedDateTime date) {
@@ -107,32 +84,16 @@ public class Comment implements Serializable {
     }
 
     public List<Comment> getAnswers() {
-        List<Comment> result = answers;
-        return result;
+        return answers.stream().filter(comment -> !comment.isCommentDeleted()).collect(Collectors.toList());
    }
 
     public void setAnswers(List<Comment> answers) {
        this.answers = answers;
    }
 
-   public Comment getParent() {
-       return parent;
-   }
-    public void setParent(Comment parent) {
-        this.parent = parent;
-   }
-
     public void addAnswer(Comment comment){
        this.answers.add(comment);
    }
-
-    public Campaign getCampaign() {
-        return campaign;
-    }
-
-    public void setCampaign(Campaign campaign) {
-        this.campaign = campaign;
-    }
 
     @Override
     public boolean equals(Object o) {

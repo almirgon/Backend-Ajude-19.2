@@ -9,9 +9,9 @@ import java.util.Optional;
 
 public interface CommentService {
 
-    Optional<Comment> findById(Long id);
+    Comment findById(Long id);
     List<Comment> findAll();
-    Comment createComment(Campaign campaign, User user, String text, long idComment);
+    Comment createComment(long idCampaign, Comment comment);
     Comment ReplyComment(long idComment, Comment comment);
     Comment deleteComment(long idComment);
 

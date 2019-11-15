@@ -18,7 +18,7 @@ public class CampaignValidator {
         if(campaign.getDescription() == null) throw new CampaignNullException("A descrição não pode ser nula");
         if(campaign.getDescription().trim().equals("")) throw new CampaignInvalidException("A descrição não pode ser vazia");
         if(campaign.getGoal() <= 0) throw new CampaignInvalidException("A meta não pode ser menor/igual a 0");
-        if(campaign.getLikes() < 0) throw new CampaignInvalidException("Os likes não podem ser abaixo de 0");
+        if(campaign.numberLikes() < 0) throw new CampaignInvalidException("Os likes não podem ser abaixo de 0");
         if(campaign.getDate().isBefore(ZonedDateTime.now()) || campaign.getDate().isEqual(ZonedDateTime.now())) throw new
                 DateInvalidException("A data não pode ser menor ou igual a atual");
     }

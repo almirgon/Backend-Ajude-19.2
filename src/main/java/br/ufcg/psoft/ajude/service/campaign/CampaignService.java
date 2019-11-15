@@ -14,4 +14,5 @@ public interface CampaignService {
    // List<Campaign> listByLike();
     List<Campaign> findBySubstring(String campaign);
     Campaign toLike(User user, long id);
+    Campaign updateCampaign(Campaign campaign);
 }

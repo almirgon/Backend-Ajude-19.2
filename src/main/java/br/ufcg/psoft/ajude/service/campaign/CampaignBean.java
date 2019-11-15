@@ -1,5 +1,6 @@
 package br.ufcg.psoft.ajude.service.campaign;
 
+import br.ufcg.psoft.ajude.exceptions.OperationNotAllowedException;
 import br.ufcg.psoft.ajude.exceptions.entity.EntityNotFoundException;
 import br.ufcg.psoft.ajude.models.Campaign;
 import br.ufcg.psoft.ajude.models.Status;
@@ -51,7 +52,7 @@ public class CampaignBean implements CampaignService {
         campaign.setStatus(Status.ATIVA);
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         campaign.setUser(user);
-        campaign.setUrl(campaign.getUrl());
+        campaign.setUrl(campaign.createUrl());
         return campaignDAO.save(campaign);
     }
 
@@ -67,9 +68,24 @@ public class CampaignBean implements CampaignService {
 
     @Override
     public Campaign toLike(User user, long id) {
-        user = (User) SecurityContextHolder.getContext().getAuthentication();
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication();
         Campaign campaign = this.findById(id);
-        campaign.addLikes(user);
-        return campaign;
+        if(user.equals(userContext) && campaign != null){
+            if(!campaign.getLikes().contains(user)){
+                campaign.getLikes().add(user);
+            }else{
+                campaign.getLikes().remove(user);
+            }
+            return this.campaignDAO.save(campaign);
+        }
+        return null;
+    }
+
+    @Override
+    public Campaign updateCampaign(Campaign campaign) {
+        if(campaign.getId() == null){
+            throw new OperationNotAllowedException("Não é permitido criar uma entidade");
+        }
+        return campaignDAO.save(campaign);
     }
 }

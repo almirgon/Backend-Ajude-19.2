@@ -1,11 +1,13 @@
 package br.ufcg.psoft.ajude.dto;
 
 import br.ufcg.psoft.ajude.models.Campaign;
+import br.ufcg.psoft.ajude.models.Comment;
 import br.ufcg.psoft.ajude.models.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 public class CampaignDTO {
 
@@ -63,6 +65,14 @@ public class CampaignDTO {
 
     public void setGoal(Double goal){
         campaign.setGoal(goal);
+    }
+
+    public List<Comment> getComments(){
+        return campaign.getComments();
+    }
+
+    public void setComments(List<Comment> comments){
+        campaign.setComments(comments);
     }
 
     public UserDTO getUser(){

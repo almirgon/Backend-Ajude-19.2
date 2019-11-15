@@ -1,21 +1,19 @@
 package br.ufcg.psoft.ajude.service.comment;
 
+import br.ufcg.psoft.ajude.exceptions.OperationNotAllowedException;
 import br.ufcg.psoft.ajude.exceptions.comment.CommentInvalidException;
 import br.ufcg.psoft.ajude.exceptions.comment.CommentNullException;
-import br.ufcg.psoft.ajude.exceptions.entity.EntityNotFoundException;
 import br.ufcg.psoft.ajude.models.Campaign;
 import br.ufcg.psoft.ajude.models.Comment;
 import br.ufcg.psoft.ajude.models.User;
 import br.ufcg.psoft.ajude.repositories.CommentDAO;
-import br.ufcg.psoft.ajude.validators.CommentValidator;
+import br.ufcg.psoft.ajude.service.campaign.CampaignService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.ZoneId;
+
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,15 +23,21 @@ public class CommentBean implements CommentService {
     @Autowired
     private CommentDAO commentDAO;
 
+    @Autowired
+    private CampaignService campaignService;
+
     @Override
-    public Optional<Comment> findById(Long id) {
+    public Comment findById(Long id) {
         Optional<Comment> comment = this.commentDAO.findById(id);
-        if(comment.isPresent()){
+        if(!comment.isPresent()){
             throw new CommentNullException("Comentário não existe");
-        }if(comment.get().isCommentDeleted()){
+        }
+
+        if(comment.get().isCommentDeleted()){
             throw new CommentInvalidException("Comentário Apagado!");
         }
-        return comment;
+
+        return comment.get();
     }
 
     @Override
@@ -43,51 +47,53 @@ public class CommentBean implements CommentService {
     }
 
     @Override
-    public Comment createComment(Campaign campaign, User user, String text, long idComment) {
-//        ZonedDateTime date = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo"));
-//
-//        Comment comment = new Comment(idComment,user,text,date,new ArrayList<Comment>());
-//
-//        CommentValidator.ValidComment(comment);
-//
-//        if (idComment == 0) {
-//            campaign.addComment(comment);
-//        } else {
-//            Comment commentFather = findById(idComment).get();
-//            commentFather.addAnswer(comment);
-//        }
-//
-//        return commentDAO.save(comment);
-
-        return null;
+    public Comment createComment(long idCampaign, Comment comment) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Campaign campaign = this.campaignService.findById(idCampaign);
+        comment.setUser(user);
+        comment.setDate(ZonedDateTime.now());
+        comment.setCommentDeleted(false);
+        commentDAO.save(comment);
+        campaign.addComment(comment);
+        campaignService.updateCampaign(campaign);
+        return comment;
 
     }
 
     @Override
     public Comment ReplyComment(long idComment, Comment comment) {
-       return null;
+        Comment parent = commentDAO.findById(idComment);
+        comment.setDate(ZonedDateTime.now());
+        comment.setCommentDeleted(false);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        comment.setUser(user);
+        parent.getAnswers().add(comment);
+        commentDAO.save(parent);
 
+
+        return comment;
     }
+
 
     @Override
     public Comment deleteComment(long idComment) {
         Comment comment = commentDAO.findById(idComment);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(!(comment.getUser().equals(user))){
+            throw new OperationNotAllowedException("O comentário não pertence ao usuario logado");
+        }
         comment.setCommentDeleted(true);
-
-//        deleteChildrens(comment.getAnswers());
+        deleteChildrens(comment.getAnswers());
         commentDAO.save(comment);
         return comment;
     }
 
     private void deleteChildrens(List<Comment> list) {
-
-        if (list.size() > 0) {
+        if (!list.isEmpty()) {
             for (int i = 0; i < list.size(); i++) {
                 list.get(i).setCommentDeleted(true);
-//                deleteChildrens(list.get(i).getAnswers());
+                deleteChildrens(list.get(i).getAnswers());
             }
-
         }
     }
-
 }
