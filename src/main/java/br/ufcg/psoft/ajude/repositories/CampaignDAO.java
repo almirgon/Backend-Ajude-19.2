@@ -14,8 +14,14 @@ public interface CampaignDAO extends JpaRepository<Campaign, Long> {
 
     Campaign findByUrl(String url);
 
-    @Query(value = "SELECT u FROM Campaign u")
+    @Query(value = "SELECT p FROM Campaign p")
     List<Campaign> getAllCampaigns();
+
+    @Query(value = "SELECT p FROM Campaign p ORDER BY p.date")
+    List<Campaign> getCampaignsByDate();
+
+    @Query(value = "SELECT p FROM Campaign p ORDER BY p.goal")
+    List<Campaign> getCampaignsByGoal();
 
     //@Query(value = "SELECT p FROM Campaign p ORDER BY p.Likes DESC,p.id ASC")
     //List<Campaign> findAllCampaignByOrderByLikesDesc();

@@ -8,11 +8,11 @@ import java.util.List;
 public interface CampaignService {
 
     Campaign findById(long id);
-    List<Campaign> findAll();
+    List<Campaign> findAll(String order);
     Campaign findByUrl(String url);
     Campaign createCampaign(Campaign campaign);
    // List<Campaign> listByLike();
     List<Campaign> findBySubstring(String campaign);
-    Campaign toLike(User user, long id);
+    Campaign toLike(long id);
     Campaign updateCampaign(Campaign campaign);
 }

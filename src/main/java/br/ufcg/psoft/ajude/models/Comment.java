@@ -1,5 +1,6 @@
 package br.ufcg.psoft.ajude.models;
 
+import br.ufcg.psoft.ajude.dto.CommentDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.validator.constraints.Length;
 

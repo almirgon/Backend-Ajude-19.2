@@ -3,7 +3,6 @@ package br.ufcg.psoft.ajude.models;
 public enum Status {
 
     ATIVA("Ativa"),
-    ENCERRADA("Encerrada"),
     VENCIDA("Vencida"),
     CONCLUIDA("Concluída");
 

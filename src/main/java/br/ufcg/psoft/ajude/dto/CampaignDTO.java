@@ -2,12 +2,14 @@ package br.ufcg.psoft.ajude.dto;
 
 import br.ufcg.psoft.ajude.models.Campaign;
 import br.ufcg.psoft.ajude.models.Comment;
+import br.ufcg.psoft.ajude.models.Status;
 import br.ufcg.psoft.ajude.models.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CampaignDTO {
 
@@ -67,8 +69,8 @@ public class CampaignDTO {
         campaign.setGoal(goal);
     }
 
-    public List<Comment> getComments(){
-        return campaign.getComments();
+    public List<CommentDTO> getComments(){
+        return campaign.getComments().stream().map(comment -> new CommentDTO(comment)).collect(Collectors.toList());
     }
 
     public void setComments(List<Comment> comments){
@@ -94,4 +96,8 @@ public class CampaignDTO {
     public void setDescription(String description){
         campaign.setDescription(description);
     }
+
+    public int getNumberLikes(){return campaign.numberLikes();}
+
+    public Status getStatus(){ return campaign.getStatus();}
 }

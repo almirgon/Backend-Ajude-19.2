@@ -43,8 +43,8 @@ public class CampaignController {
 
     @ApiOperation(value = "Busca todas as campanhas cadastradas")
     @GetMapping
-    public ResponseEntity<List<CampaignDTO>> getAll() {
-        List<CampaignDTO> campaigns = campaignBusinessDelegate.findAll();
+    public ResponseEntity<List<CampaignDTO>> getAll(@RequestParam (required = false) String order) {
+        List<CampaignDTO> campaigns = campaignBusinessDelegate.orderBy(order);
         return new ResponseEntity<>(campaigns, HttpStatus.OK);
     }
 
@@ -54,7 +54,9 @@ public class CampaignController {
         return new ResponseEntity<>(this.campaignBusinessDelegate.findBySubstring(campaign), HttpStatus.OK);
     }
 
-
-
+    @PostMapping("/like/{idCampaign}")
+    public ResponseEntity<CampaignDTO> toLike(@PathVariable long idCampaign){
+        return new ResponseEntity<>(this.campaignBusinessDelegate.toLike(idCampaign), HttpStatus.OK);
+    }
 
 }

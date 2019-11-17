@@ -1,5 +1,6 @@
 package br.ufcg.psoft.ajude.models;
 
+import br.ufcg.psoft.ajude.dto.CommentDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.validator.constraints.Length;
 
@@ -188,6 +189,10 @@ public class Campaign implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void addDonation(Donation donation){
+        this.donations.add(donation);
     }
 
 

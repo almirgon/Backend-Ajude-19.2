@@ -67,7 +67,8 @@ public class CommentBean implements CommentService {
         comment.setCommentDeleted(false);
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         comment.setUser(user);
-        parent.getAnswers().add(comment);
+        commentDAO.save(comment);
+        parent.addAnswer(comment);
         commentDAO.save(parent);
 
 

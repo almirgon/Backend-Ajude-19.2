@@ -1,5 +1,7 @@
 package br.ufcg.psoft.ajude.controllers;
 
+import br.ufcg.psoft.ajude.business.CommentBusinessDelegate;
+import br.ufcg.psoft.ajude.dto.CommentDTO;
 import br.ufcg.psoft.ajude.models.Comment;
 import br.ufcg.psoft.ajude.service.comment.CommentService;
 import io.swagger.annotations.Api;
@@ -15,24 +17,24 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController {
 
     @Autowired
-    private CommentService commentService;
+    private CommentBusinessDelegate commentBusinessDelegate;
 
     @PostMapping()
     @ApiOperation(value = "Cria um comentário para uma campanha")
-    public ResponseEntity<Comment> toComment(@PathVariable long idCampaign, @RequestBody Comment comment){
-        return new ResponseEntity<>(this.commentService.createComment(idCampaign,comment), HttpStatus.CREATED);
+    public ResponseEntity<CommentDTO> toComment(@PathVariable long idCampaign, @RequestBody CommentDTO commentDTO){
+        return new ResponseEntity<>(this.commentBusinessDelegate.createComment(idCampaign,commentDTO), HttpStatus.CREATED);
     }
 
     @PostMapping("/{id}")
     @ApiOperation(value = "Responde um comentário de uma campanha")
-    public ResponseEntity<Comment> replyComment(@PathVariable long id, @RequestBody Comment comment){
-        return new ResponseEntity<>(this.commentService.ReplyComment(id,comment), HttpStatus.OK);
+    public ResponseEntity<CommentDTO> replyComment(@PathVariable long id, @RequestBody CommentDTO commentDTO){
+        return new ResponseEntity<>(this.commentBusinessDelegate.replyComment(id,commentDTO), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "Deleta o comentário de uma campanhas")
-    public ResponseEntity<Comment> deleteComment(@PathVariable long id){
-        return new ResponseEntity<>(this.commentService.deleteComment(id), HttpStatus.OK);
+    public ResponseEntity<CommentDTO> deleteComment(@PathVariable long id){
+        return new ResponseEntity<>(this.commentBusinessDelegate.removeComment(id), HttpStatus.OK);
     }
 
 

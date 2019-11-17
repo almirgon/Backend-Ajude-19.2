@@ -20,14 +20,12 @@ public class Donation implements Serializable {
     @ManyToOne
     private User user;
 
+    @ManyToOne
+    private Campaign campaign;
+
     public Donation() {
     }
 
-    public Donation(Long id, Double value, User user) {
-        this.id = id;
-        this.value = value;
-        this.user = user;
-    }
 
     public Long getId() {
         return id;
@@ -51,5 +49,13 @@ public class Donation implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Campaign getCampaign() {
+        return campaign;
+    }
+
+    public void setCampaign(Campaign campaign) {
+        this.campaign = campaign;
     }
 }

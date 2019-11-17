@@ -6,6 +6,7 @@ import br.ufcg.psoft.ajude.models.Campaign;
 import br.ufcg.psoft.ajude.models.Status;
 import br.ufcg.psoft.ajude.models.User;
 import br.ufcg.psoft.ajude.repositories.CampaignDAO;
+import br.ufcg.psoft.ajude.service.user.UserService;
 import br.ufcg.psoft.ajude.validators.CampaignValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +23,9 @@ public class CampaignBean implements CampaignService {
     @Autowired
     private CampaignValidator campaignValidator;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public Campaign findById(long id) {
         Campaign result = this.campaignDAO.findCampaignById(id);
@@ -31,10 +35,20 @@ public class CampaignBean implements CampaignService {
         return result;
     }
 
+
     @Override
-    public List<Campaign> findAll() {
-        List<Campaign> campaigns = campaignDAO.findAll();
-        return campaigns;
+    public List<Campaign> findAll(String order) {
+        if(order == null){
+            order = "";
+        }
+        if(order.equals("goal")){
+            return campaignDAO.getCampaignsByGoal();
+        }else if(order.equals("date")){
+            return campaignDAO.getCampaignsByDate();
+        }else{
+            return campaignDAO.getAllCampaigns();
+        }
+
     }
 
     @Override
@@ -67,18 +81,15 @@ public class CampaignBean implements CampaignService {
     }
 
     @Override
-    public Campaign toLike(User user, long id) {
-        User userContext = (User) SecurityContextHolder.getContext().getAuthentication();
+    public Campaign toLike(long id) {
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Campaign campaign = this.findById(id);
-        if(user.equals(userContext) && campaign != null){
-            if(!campaign.getLikes().contains(user)){
-                campaign.getLikes().add(user);
-            }else{
-                campaign.getLikes().remove(user);
-            }
-            return this.campaignDAO.save(campaign);
+        if (!campaign.getLikes().contains(userContext)){
+            campaign.getLikes().add(userContext);
+        } else {
+            campaign.getLikes().remove(userContext);
         }
-        return null;
+        return this.campaignDAO.save(campaign);
     }
 
     @Override
