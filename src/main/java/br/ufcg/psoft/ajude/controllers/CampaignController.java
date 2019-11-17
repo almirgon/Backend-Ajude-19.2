@@ -41,7 +41,7 @@ public class CampaignController {
 //        return new ResponseEntity<List<Campaign>>(campaignService.listByLike(), HttpStatus.OK);
 //    }
 
-    @ApiOperation(value = "Busca todas as campanhas cadastradas")
+    @ApiOperation(value = "Busca todas as campanhas cadastradas a partir de uma ordem ou não")
     @GetMapping
     public ResponseEntity<List<CampaignDTO>> getAll(@RequestParam (required = false) String order) {
         List<CampaignDTO> campaigns = campaignBusinessDelegate.orderBy(order);
@@ -54,6 +54,7 @@ public class CampaignController {
         return new ResponseEntity<>(this.campaignBusinessDelegate.findBySubstring(campaign), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Um usuário autenticado pode dar like em campanhas")
     @PostMapping("/like/{idCampaign}")
     public ResponseEntity<CampaignDTO> toLike(@PathVariable long idCampaign){
         return new ResponseEntity<>(this.campaignBusinessDelegate.toLike(idCampaign), HttpStatus.OK);
