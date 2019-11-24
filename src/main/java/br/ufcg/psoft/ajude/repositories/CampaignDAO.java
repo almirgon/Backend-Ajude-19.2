@@ -23,9 +23,16 @@ public interface CampaignDAO extends JpaRepository<Campaign, Long> {
     @Query(value = "SELECT p FROM Campaign p ORDER BY p.goal")
     List<Campaign> getCampaignsByGoal();
 
-    //@Query(value = "SELECT p FROM Campaign p ORDER BY p.Likes DESC,p.id ASC")
-    //List<Campaign> findAllCampaignByOrderByLikesDesc();
+    @Query(value = "SELECT p FROM Campaign p ORDER BY p.numLikes DESC, p.id ASC")
+    List<Campaign> getCampaignsByLike();
 
     @Query(value="SELECT p FROM Campaign p WHERE LOWER(p.name) LIKE %:campaign%")
     List<Campaign> findBySubstring(String campaign);
+
+    @Query(value = "SELECT d.campaign FROM Donation d WHERE d.user.email = :email")
+    List<Campaign> getCampaignsbyDonateUser(String email);
+
+    @Query(value = "SELECT p FROM Campaign p WHERE p.user.email = :email")
+    List<Campaign> getCampaignsCreateByUser(String email);
+
 }

@@ -7,7 +7,7 @@ import br.ufcg.psoft.ajude.models.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,12 +52,12 @@ public class CampaignDTO {
         campaign.setName(name);
     }
 
-    public ZonedDateTime getDate(){
+    public LocalDate getDate(){
         return campaign.getDate();
     }
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-    public void setDate(ZonedDateTime date){
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    public void setDate(LocalDate date){
         campaign.setDate(date);
     }
 

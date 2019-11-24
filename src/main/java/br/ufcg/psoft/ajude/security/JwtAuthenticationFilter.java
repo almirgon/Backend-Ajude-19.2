@@ -1,5 +1,6 @@
 package br.ufcg.psoft.ajude.security;
 
+import br.ufcg.psoft.ajude.dto.TokenDTO;
 import br.ufcg.psoft.ajude.models.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
@@ -56,10 +57,20 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .setIssuer(ConstantesSeguranca.TOKEN_ISSUER)
                 .setAudience(ConstantesSeguranca.TOKEN_AUDIENCE)
                 .setSubject(user)
-                .setExpiration(new Date(System.currentTimeMillis() + 864000000))
+                .setExpiration(new Date(System.currentTimeMillis() + 86400000))
                 .compact();
 
         response.addHeader(ConstantesSeguranca.TOKEN_HEADER, ConstantesSeguranca.TOKEN_PREFIX + token);
+        try {
+            TokenDTO tokenDTO = new TokenDTO(ConstantesSeguranca.TOKEN_PREFIX + token);
+            ObjectMapper mapper = new ObjectMapper();
+            String json = mapper.writeValueAsString(tokenDTO);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(json);
+        } catch (Exception e){
+
+        }
     }
 
 }

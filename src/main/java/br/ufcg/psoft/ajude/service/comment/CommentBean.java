@@ -13,7 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,7 +51,7 @@ public class CommentBean implements CommentService {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Campaign campaign = this.campaignService.findById(idCampaign);
         comment.setUser(user);
-        comment.setDate(ZonedDateTime.now());
+        comment.setDate(LocalDate.now());
         comment.setCommentDeleted(false);
         commentDAO.save(comment);
         campaign.addComment(comment);
@@ -63,7 +63,7 @@ public class CommentBean implements CommentService {
     @Override
     public Comment ReplyComment(long idComment, Comment comment) {
         Comment parent = commentDAO.findById(idComment);
-        comment.setDate(ZonedDateTime.now());
+        comment.setDate(LocalDate.now());
         comment.setCommentDeleted(false);
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         comment.setUser(user);

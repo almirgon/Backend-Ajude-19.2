@@ -2,8 +2,6 @@ package br.ufcg.psoft.ajude.controllers;
 
 import br.ufcg.psoft.ajude.business.CommentBusinessDelegate;
 import br.ufcg.psoft.ajude.dto.CommentDTO;
-import br.ufcg.psoft.ajude.models.Comment;
-import br.ufcg.psoft.ajude.service.comment.CommentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +17,21 @@ public class CommentController {
     @Autowired
     private CommentBusinessDelegate commentBusinessDelegate;
 
+    @CrossOrigin
     @PostMapping()
     @ApiOperation(value = "Cria um comentário para uma campanha")
     public ResponseEntity<CommentDTO> toComment(@PathVariable long idCampaign, @RequestBody CommentDTO commentDTO){
         return new ResponseEntity<>(this.commentBusinessDelegate.createComment(idCampaign,commentDTO), HttpStatus.CREATED);
     }
 
+    @CrossOrigin
     @PostMapping("/{id}")
     @ApiOperation(value = "Responde um comentário de uma campanha")
     public ResponseEntity<CommentDTO> replyComment(@PathVariable long id, @RequestBody CommentDTO commentDTO){
         return new ResponseEntity<>(this.commentBusinessDelegate.replyComment(id,commentDTO), HttpStatus.OK);
     }
 
+    @CrossOrigin
     @DeleteMapping("/{id}")
     @ApiOperation(value = "Deleta o comentário de uma campanhas")
     public ResponseEntity<CommentDTO> deleteComment(@PathVariable long id){

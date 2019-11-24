@@ -18,6 +18,7 @@ public class DonationController {
     @Autowired
     private DonationService donationService;
 
+    @CrossOrigin
     @ApiOperation(value = "Um usuario autenticado pode relizar uma doação para uma campanha")
     @PostMapping
     public ResponseEntity<CampaignDTO> donate(@PathVariable Long idCampaign, @RequestBody Donation donation){

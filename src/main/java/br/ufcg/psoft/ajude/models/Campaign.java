@@ -1,6 +1,5 @@
 package br.ufcg.psoft.ajude.models;
 
-import br.ufcg.psoft.ajude.dto.CommentDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.validator.constraints.Length;
 
@@ -9,7 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.text.Normalizer;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -29,8 +28,8 @@ public class Campaign implements Serializable {
     private String name;
 
     @Column
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-    private ZonedDateTime date;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate date;
 
     @Column
     private Status status;
@@ -62,6 +61,9 @@ public class Campaign implements Serializable {
     @ManyToOne
     private User user;
 
+    @Column
+    private Integer numLikes;
+
     public Campaign() {
         this.donations = new ArrayList<>();
         this.likes = new ArrayList<>();
@@ -84,11 +86,11 @@ public class Campaign implements Serializable {
         this.name = name;
     }
 
-    public ZonedDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(ZonedDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -124,6 +126,14 @@ public class Campaign implements Serializable {
         if (this.likes != null)
             return this.likes.size();
         return 0;
+    }
+
+    public Integer getNumLikes() {
+        return numberLikes();
+    }
+
+    public void setNumLikes(Integer numLikes) {
+        this.numLikes = numLikes;
     }
 
     public String createUrl(){

@@ -22,6 +22,7 @@ public class UserController {
     @Autowired
     private EmailService emailService;
 
+    @CrossOrigin
     @ApiOperation(value = "Cadastra um novo usuário")
     @PostMapping
     public ResponseEntity<User> addUser(@RequestBody User user){

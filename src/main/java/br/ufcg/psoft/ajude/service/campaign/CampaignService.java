@@ -11,8 +11,9 @@ public interface CampaignService {
     List<Campaign> findAll(String order);
     Campaign findByUrl(String url);
     Campaign createCampaign(Campaign campaign);
-   // List<Campaign> listByLike();
     List<Campaign> findBySubstring(String campaign);
     Campaign toLike(long id);
     Campaign updateCampaign(Campaign campaign);
+    List<Campaign> getCampaignsCreateByUser(String email);
+    List<Campaign> getCampaignsbyDonateUser(String email);
 }

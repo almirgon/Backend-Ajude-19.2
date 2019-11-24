@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 public class DonationBean implements DonationService {
 
@@ -25,6 +27,7 @@ public class DonationBean implements DonationService {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         donation.setCampaign(campaign);
         donation.setUser(user);
+        donation.setDate(LocalDate.now());
         if(campaign.getStatus() == Status.ATIVA){
             donationDAO.save(donation);
             campaign.addDonation(donation);
