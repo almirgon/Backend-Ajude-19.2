@@ -55,7 +55,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5500", "http://localhost:8000", "https://ajudepsoft192client.herokuapp.com"));
+        config.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5500", "http://localhost:8000", "https://ajudepsoft192client.herokuapp.com", "https://musing-morse-69cc91.netlify.com/"));
         // Maybe I can just say "*" for methods and headers
         // I just copied these lists from another Dropwizard project
         config.setAllowedMethods(Arrays.asList("GET", "PUT", "POST", "DELETE", "OPTIONS", "HEAD"));
