@@ -1,8 +1,11 @@
 package br.ufcg.psoft.ajude.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "tb_donation")
@@ -22,6 +25,10 @@ public class Donation implements Serializable {
 
     @ManyToOne
     private Campaign campaign;
+
+    @Column
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate date;
 
     public Donation() {
     }
@@ -57,5 +64,13 @@ public class Donation implements Serializable {
 
     public void setCampaign(Campaign campaign) {
         this.campaign = campaign;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 }

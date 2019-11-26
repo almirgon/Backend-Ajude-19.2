@@ -45,6 +45,8 @@ public class CampaignBean implements CampaignService {
             return campaignDAO.getCampaignsByGoal();
         }else if(order.equals("date")){
             return campaignDAO.getCampaignsByDate();
+        }else if(order.equals("like")){
+            return campaignDAO.getCampaignsByLike();
         }else{
             return campaignDAO.getAllCampaigns();
         }
@@ -70,11 +72,6 @@ public class CampaignBean implements CampaignService {
         return campaignDAO.save(campaign);
     }
 
-   // @Override
-    //public List<Campaign> listByLike() {
-        //return this.campaignDAO.findAllCampaignByOrderByLikesDesc();
-    //}
-
     @Override
         public List<Campaign> findBySubstring(String campaign) {
             return this.campaignDAO.findBySubstring(campaign.toLowerCase());
@@ -89,6 +86,7 @@ public class CampaignBean implements CampaignService {
         } else {
             campaign.getLikes().remove(userContext);
         }
+        campaign.setNumLikes(campaign.getLikes().size());
         return this.campaignDAO.save(campaign);
     }
 
@@ -98,5 +96,15 @@ public class CampaignBean implements CampaignService {
             throw new OperationNotAllowedException("Não é permitido criar uma entidade");
         }
         return campaignDAO.save(campaign);
+    }
+
+    @Override
+    public List<Campaign> getCampaignsCreateByUser(String email) {
+        return this.campaignDAO.getCampaignsCreateByUser(email);
+    }
+
+    @Override
+    public List<Campaign> getCampaignsbyDonateUser(String email) {
+        return this.campaignDAO.getCampaignsbyDonateUser(email);
     }
 }

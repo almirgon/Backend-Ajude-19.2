@@ -6,7 +6,7 @@ import br.ufcg.psoft.ajude.exceptions.date.DateInvalidException;
 import br.ufcg.psoft.ajude.models.Campaign;
 import org.springframework.stereotype.Component;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 
 @Component
 public class CampaignValidator {
@@ -19,7 +19,7 @@ public class CampaignValidator {
         if(campaign.getDescription().trim().equals("")) throw new CampaignInvalidException("A descrição não pode ser vazia");
         if(campaign.getGoal() <= 0) throw new CampaignInvalidException("A meta não pode ser menor/igual a 0");
         if(campaign.numberLikes() < 0) throw new CampaignInvalidException("Os likes não podem ser abaixo de 0");
-        if(campaign.getDate().isBefore(ZonedDateTime.now()) || campaign.getDate().isEqual(ZonedDateTime.now())) throw new
+        if(campaign.getDate().isBefore(LocalDate.now()) || campaign.getDate().isEqual(LocalDate.now())) throw new
                 DateInvalidException("A data não pode ser menor ou igual a atual");
     }
 }

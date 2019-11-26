@@ -35,7 +35,7 @@ public class SwaggerConfig {
                 "Objetivo: O AJuDE é uma ferramenta que permite a organização de doações para projetos/campanhas.",
                 "1.0",
                 "Terms of Service",
-                new Contact("Almir Crispiniano & João Teodulo", "https://google.com",
+                new Contact("Almir Crispiniano", "https://musing-morse-69cc91.netlify.com",
                         "ajudepsoft192@gmail.com"),
                 "Apache License Version 2.0",
                 "https://www.apache.org/licesen.html", new ArrayList<VendorExtension>()

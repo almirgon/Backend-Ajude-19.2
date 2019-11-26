@@ -20,7 +20,7 @@ public class EmailService {
         message.setText("Olá, " + user.getFirstName() + System.lineSeparator() +
                System.lineSeparator() + "Obrigado por se cadastrar na nossa plataforma para financiamento coletivo " +
                 "onde as causas mais populares ganham mais visibilidade :)" + System.lineSeparator() +
-                "Acesse nossa plataforma em: colocar a url aqui");
+                "Acesse nossa plataforma em: https://musing-morse-69cc91.netlify.com/#/login");
         message.setTo(user.getEmail());
         message.setFrom("AJuDE <ajudepsoft192@gmail.com>");
 

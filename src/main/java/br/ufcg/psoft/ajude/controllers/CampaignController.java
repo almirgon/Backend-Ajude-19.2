@@ -19,6 +19,7 @@ public class CampaignController {
     @Autowired
     private CampaignBusinessDelegate campaignBusinessDelegate;
 
+    @CrossOrigin
     @ApiOperation(value = "Cadastra uma campanha")
     @PostMapping
     public ResponseEntity<CampaignDTO> addCampaign(@RequestBody CampaignDTO campaignDTO){
@@ -30,17 +31,14 @@ public class CampaignController {
         return new ResponseEntity<>(campaignBusinessDelegate.findById(id), HttpStatus.OK);
     }
 
+    @CrossOrigin
     @ApiOperation(value = "Busca uma campanha pela sua URL")
     @GetMapping("/buscar/{url}")
     public ResponseEntity<CampaignDTO> getByUrl(@PathVariable String url){
         return new ResponseEntity<>(campaignBusinessDelegate.findByUrl(url), HttpStatus.OK);
     }
 
-//    @GetMapping("/ranking/likes")
-//    public ResponseEntity<List<Campaign>> rankingByLike(){
-//        return new ResponseEntity<List<Campaign>>(campaignService.listByLike(), HttpStatus.OK);
-//    }
-
+    @CrossOrigin
     @ApiOperation(value = "Busca todas as campanhas cadastradas a partir de uma ordem ou não")
     @GetMapping
     public ResponseEntity<List<CampaignDTO>> getAll(@RequestParam (required = false) String order) {
@@ -48,14 +46,16 @@ public class CampaignController {
         return new ResponseEntity<>(campaigns, HttpStatus.OK);
     }
 
+    @CrossOrigin
     @ApiOperation(value = "Busca uma campanha a partir de uma substring")
     @GetMapping("/search/{campaign}")
     public ResponseEntity<List<CampaignDTO>> getBySubstring(@PathVariable String campaign) {
         return new ResponseEntity<>(this.campaignBusinessDelegate.findBySubstring(campaign), HttpStatus.OK);
     }
 
+    @CrossOrigin
     @ApiOperation(value = "Um usuário autenticado pode dar like em campanhas")
-    @PostMapping("/like/{idCampaign}")
+    @PostMapping("/{idCampaign}/like")
     public ResponseEntity<CampaignDTO> toLike(@PathVariable long idCampaign){
         return new ResponseEntity<>(this.campaignBusinessDelegate.toLike(idCampaign), HttpStatus.OK);
     }
