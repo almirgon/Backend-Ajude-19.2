@@ -72,7 +72,7 @@
 
 ## Token(JWT)
 
-A configuração do token é de 86400000 milissegundos(enquivalente a um dia) já que a aplicação não é crítica.
+A configuração do token é de 86400000 milissegundos(equivalente a um dia) já que a aplicação não é crítica.
 
 ## Documentação da API 
 
