@@ -70,6 +70,9 @@
 
 ## Links 
 
+-[Link para o Youtube](https://www.youtube.com/watch?v=jEhp7V0sIeQ) 
+-[Link para a aplicação](https://musing-morse-69cc91.netlify.com) 
+
 ## Token(JWT)
 
 A configuração do token é de 86400000 milissegundos(equivalente a um dia) já que a aplicação não é crítica.
